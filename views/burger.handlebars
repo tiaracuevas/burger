@@ -1,0 +1,103 @@
+<h1>Burgers!</h1>
+
+<div id="burgers-container">
+  <div>
+    {{#each burgers}}
+      {{#if devoured}}
+        {{else}}
+        <p>{{name}} <button data-id="{{id}}" class="devour">Devour</button><p>
+      {{/if}}
+    {{/each}}
+  </div>
+  <div>
+    {{#each burgers}}
+      {{#if devoured}}
+        <p class="devoured">{{name}}<p>
+      {{/if}}
+    {{/each}}
+  </div>
+</div>
+
+<div id="form-container">
+  <input id="add-input" type="text" id="burger-text">
+  <button id="add-button" type="button" id="burger-button">Add</button>
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous">
+</script>
+
+<script>
+$(".devour").on("click", function(event) {
+  var id = $(this).data("id");
+  console.log(id);
+  $.ajax("/burgers/update/" + id, {
+      type: "PATCH"
+    }).then(
+      function() {
+        console.log("updated id ", id);
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+});
+
+$("#add-button").on("click", function(event) {
+  var payload = {
+    name:$('#add-input').val()
+  }
+  $.post("/burgers/add/", payload, function(response){
+      console.log(response)
+      location.reload();
+  });
+});
+</script>
+
+{{!-- <h1>Burgers!</h1>
+
+<h2>Burgers that are ready!</h2>
+
+<ul>
+  {{#each burgers}}
+    {{#unless devoured}}
+      {{> burgers-block devoured=true}}
+    {{/unless}}
+  {{/each}}
+</ul>
+
+<h2>Burgers that are devoured!</h2>
+
+<ul>
+  {{#each burgers}}
+    {{#if devoured}}
+      {{> burgers-block devoured=false}}
+    {{/if}}
+  {{/each}}
+</ul>
+
+<h2>Add a Burger</h2>
+<form class="create-form">
+
+  <div class="form-group">
+    <label for="burg">Burger Name:</label>
+    <input type="text" id="burg" name="name">
+  </div>
+
+ 
+
+  <button type="submit">Add Burger</button>
+</form>
+
+<script>
+  $(".create-form").on("submit", function(e){
+    e.preventDefault()
+    var name = $("#burg").val()
+    console.log(name)
+    var body = {name: name}
+    $.post("/add", body, function(response){
+      console.log(response)
+    })
+  })
+</script> --}}
