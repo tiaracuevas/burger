@@ -4,7 +4,7 @@ var router = express.Router();
 var burger = require("../models/burger")
 
 router.get("/", function (req, res) {
-    burger.all(function (data) {
+    burger.all(function(data) {
         var obj = {
             burgers: data
         };
@@ -13,16 +13,18 @@ router.get("/", function (req, res) {
     });
 });
 
-router.post("api/burgers", function (req, res) {
-    burger.create([
-        "name", "devoured"
-    ], [req.body.name, req.body.devoured],
-        function (result) {
-            res.json({ id: result.insertID })
-        });
+router.post("/add", function (req, res) {
+    console.log(body)
+    res.send("route works")
+    // burger.create([
+    //     "name", "devoured"
+    // ], [req.body.name, false],
+    //     function () {
+    //         res.send("works")
+    //     });
 });
 
-router.put("/api/burgers/:id", function (req, res) {
+router.put("/:id", function (req, res) {
     var condition = "id = " + req.params.id;
     console.log("condition" + condition)
 
@@ -39,10 +41,10 @@ router.put("/api/burgers/:id", function (req, res) {
 
 });
 
-router.delete("api/burgers/:id", function (req, res) {
+router.delete("/:id", function (req, res) {
     var condition = "id = " + req.params.id;
 
-    burger.delete(condtion, function (result) {
+    burger.delete(condition, function (result) {
         if (result.affected == 0) {
             return res.status(404).end();
         } else {

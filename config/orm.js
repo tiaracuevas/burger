@@ -1,6 +1,6 @@
 var connection = require("./connection.js")
 
-var tableName = "burgers";
+//var tableName = "burgers";
 
 // Helper function to convert object key/value pairs to SQL syntax
 function objToSql(ob) {
